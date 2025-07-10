@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitevoo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+</head>
+
+<body>
+    <div class="bg-pink-800 h-32 flex items-center justify-between px-10">
+        <h1 class="text-3xl font-extrabold font-mono text-white">Bitevoo</h1>
+
+        <div class="flex items-center gap-4">
+
+            <!-- Home Icon -->
+            <a href="index.html" title="Home" class="text-white hover:text-gray-300  text-2xl focus:outline-none">
+                <i class="fas fa-home"></i>
+            </a>
+
+            <!-- Search Icon button -->
+            <button onclick="scrollToSearch()" class="text-white hover:text-gray-300  text-2xl focus:outline-none"
+                aria-label="Search">
+                <!-- SVG search icon -->
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+            <!-- Cart Icon -->
+            <div class="relative cursor-pointer ml-4" onclick="goToCart()">
+                <i class="fas fa-shopping-cart text-white  hover:text-gray-300   text-2xl"></i>
+                <span id="cart-count"
+                    class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5">
+                    0
+                </span>
+            </div>
+
+            <!-- Existing Login/Register button -->
+            <button class="bg-black text-white rounded-2xl hover:bg-gray-700 px-6 py-2"
+                onclick="toggleLoginModal()">Login /
+                Register</button>
+            <!-- Sign Out Button (initially hidden) -->
+            <button id="signOutBtn" class="hidden bg-black text-white rounded-2xl hover:bg-gray-700 px-6 py-2"
+                onclick="signOut()">
+                Sign Out
+            </button>
+
+        </div>
+    </div>
+
+    <section class="bg-white py-16 px-4 sm:px-8 lg:px-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+
+            <div>
+                <h2 class="text-4xl font-bold text-pink-800 mb-4">About Bitevoo</h2>
+                <p class="text-lg text-gray-600 mb-6 ">
+                    At <span class="font-semibold text-blue-600">Bitevoo</span>, we believe great food brings people
+                    together. Whether you're craving comfort food, exploring new cuisines, or need a quick bite, Bitevoo
+                    connects you with your favorite local restaurants — fast, fresh, and straight to your door.
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-6">
+                    <li><strong>Wide Restaurant Network:</strong> Discover top-rated and local hidden gems.</li>
+                    <li><strong>Fast & Reliable Delivery:</strong> Real-time tracking with quality service.</li>
+                    <li><strong>Family-Friendly Interface:</strong> Designed for simplicity and ease.</li>
+                    <li><strong>Smart Reordering:</strong> Get your favorites again with one click.</li>
+                    <li><strong>Customer First:</strong> Transparent communication and friendly support.</li>
+                </ul>
+                <p class="text-gray-600">
+                    Join the Bitevoo family and experience food delivery made with care, speed, and a taste for quality.
+                </p>
+            </div>
+
+            <!-- Image -->
+            <div>
+                <img src="./images/AboutUs.avif" alt="Delicious food delivery"
+                    class="rounded-2xl shadow-lg w-full object-cover max-h-[500px]" />
+            </div>
+
+        </div>
+    </section>
+    <div id="searchSection" class="mt-8"></div>
+    <section class="bg-gray-100 py-10 px-4 sm:px-8 lg:px-20">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-6 flex flex-col md:flex-row gap-4 items-center">
+                <input id="searchInput" type="text" placeholder="Search restaurants..."
+                    class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500">
+                <button onclick="filterRestaurants()"
+                    class="bg-pink-700 text-white px-6 py-2 rounded hover:bg-pink-900">Search</button>
+            </div>
+
+            <ul id="restaurantList" class="space-y-4 hidden">
+                <li class="restaurant-item text-lg font-medium text-gray-700">Chick-fil-A</li>
+                <li class="restaurant-item text-lg font-medium text-gray-700">Yokohama</li>
+                <li class="restaurant-item text-lg font-medium text-gray-700">Mario's Pizza</li>
+                <li class="restaurant-item text-lg font-medium text-gray-700">China Garden Restaurant</li>
+                <li class="restaurant-item text-lg font-medium text-gray-700">KFC</li>
+            </ul>
+        </div>
+    </section>
+    </div>
+    <!-- Food Items Container -->
+    <div id="foodItemsContainer" class="mt-6 hidden">
+        <h3 class="text-xl font-semibold text-pink-700 mb-4">Menu</h3>
+        <ul id="foodList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6"></ul>
+    </div>
+    <div id="toast"
+        class="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-500 z-50">
+    </div>
+
+    <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-pink-200 p-6 rounded shadow-md w-full max-w-sm relative">
+            <!-- Close Button -->
+            <button onclick="closeModal('loginModal')"
+                class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+
+            <!-- Title -->
+            <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+
+            <!-- Create Account -->
+            <a class="text-pink-500 text-lg cursor-pointer mb-4 block text-center" onclick="toggleRegisterModal()">
+                or create an account
+            </a>
+
+            <!-- Form -->
+            <form onsubmit="return login()" novalidate>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Email</label>
+                    <input id="loginEmail" type="email"
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Password</label>
+                    <input id="loginPassword" type="password"
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required>
+                </div>
+                <button type="submit" class="bg-black text-white w-full py-2 rounded hover:bg-gray-700">
+                    LOGIN
+                </button>
+                <p id="loginMessage" class="mt-4 text-center font-medium"></p>
+            </form>
+        </div>
+    </div>
+    <div id="registerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-pink-200 p-6 rounded shadow-md w-full max-w-sm relative">
+            <button onclick="closeModal('registerModal')"
+                class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">&times;</button>
+            <h2 class="text-2xl font-bold mb-4">Register</h2>
+            <form onsubmit="return register()" novalidate>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Name</label>
+                    <input type="name"
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required>
+                    <label class="block text-sm font-medium mb-1">Phone Number</label>
+                    <input id="phoneNumber" type="phoneNumber"
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required>
+                    <label class="block text-sm font-medium mb-1">Email</label>
+                    <input id="registerEmail" type="email"
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required>
+                    <label class="block text-sm font-medium mb-1">Password</label>
+                    <input id="registerPassword" type="password"
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required>
+                    <label class="block text-sm font-medium mb-1">Confirm Password</label>
+                    <input id="confirmPassword" type="password"
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required>
+                    <button type="submit"
+                        class="bg-black text-white w-full py-2 rounded hover:bg-gray-700">REGISTER</button>
+                    <p id="registerMessage" class="mt-4 text-center font-medium"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="otpModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-pink-200 p-6 rounded shadow-md w-full max-w-sm relative">
+            <button onclick="closeModal('otpModal')"
+                class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">&times;</button>
+            <h2 class="text-2xl font-bold mb-4">OTP Verification</h2>
+            <form onsubmit="return verifyOTP()" novalidate>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">Enter OTP</label>
+                    <input id="otp" type="number"
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required>
+                </div>
+                <button type="submit" class="bg-black text-white w-full py-2 rounded hover:bg-gray-700">Verify
+                    OTP</button>
+                <p id="otpMessage" class="mt-4 text-center font-medium"></p>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
