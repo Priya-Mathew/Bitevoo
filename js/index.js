@@ -1,4 +1,4 @@
-let isLoggedIn = false;
+
 
 function toggleLoginModal() {
     const modal = document.getElementById("loginModal");
@@ -10,12 +10,10 @@ function toggleRegisterModal() {
     modal.classList.remove("hidden");
 }
 function toggleOTPModal() {
-    alert('otp');
     const modal = document.getElementById("otpModal");
     modal.classList.remove("hidden");
 }
 function closeModal(id) {
-    alert('alert');
     document.getElementById(id).classList.add("hidden");
 }
 function filterRestaurants() {
@@ -23,6 +21,7 @@ function filterRestaurants() {
     const list = document.getElementById("restaurantList");
     const items = document.querySelectorAll(".restaurant-item");
     let hasMatch = false;
+
 
     items.forEach(item => {
         const name = item.textContent.toLowerCase();
@@ -62,24 +61,29 @@ const restaurantMenus = {
     ],
 };
 
-function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const count = cart.length;
-    document.getElementById('cart-count').textContent = count;
-}
+
 
 function goToCart() {
     window.location.href = 'cart.html';
 }
 
 // Call it on page load
-document.addEventListener('DOMContentLoaded', updateCartCount);
+document.addEventListener("DOMContentLoaded", () => {
+    const savedMenus = JSON.parse(localStorage.getItem("updatedPrices"));
+    if (savedMenus) {
+        Object.assign(restaurantMenus, savedMenus);
+    }
+
+    updateCartCount();
+});
+
 
 
 function showMenu(restaurantName) {
     const container = document.getElementById("foodItemsContainer");
     const list = document.getElementById("foodList");
     const foods = restaurantMenus[restaurantName] || [];
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
 
     list.innerHTML = ""; // Clear previous
 
@@ -88,16 +92,28 @@ function showMenu(restaurantName) {
         li.className = "bg-white rounded-2xl shadow-md overflow-hidden";
 
         li.innerHTML = `
-            <img src="${item.image}" alt="${item.name}" class="w-full h-40 object-cover" />
-            <div class="p-4">
-                <h4 class="text-lg font-bold text-gray-800 mb-1">${item.name}</h4>
-                <p class="text-pink-700 font-semibold mb-3">${item.price}</p>
-                <button onclick="handleAddToCart('${item.name}')"
-                    class="bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-800">
-                    Add to Cart
-                </button>
-            </div>
-        `;
+    <img src="${item.image}" alt="${item.name}" class="w-full h-40 object-cover" />
+    <div class="p-4">
+        <h4 class="text-lg font-bold text-gray-800 mb-1">${item.name}</h4>
+        <p class="text-pink-700 font-semibold mb-3" id="price-${item.name}">${item.price}</p>
+
+        ${isAdmin ? `
+        <input type="text" placeholder="New Price" id="new-price-${item.name}" 
+               class="border rounded px-2 py-1 mb-2 text-sm w-24">
+        <button onclick="updatePrice('${item.name}')"
+                class="bg-pink-600 text-white px-3 py-1 rounded hover:bg-pink-800 ml-2">
+            Update Price
+        </button>` : ''}
+
+        ${!isAdmin ? `
+    <button onclick="handleAddToCart('${item.name}')"
+        class="bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-800 mt-2 block">
+        Add to Cart
+    </button>` : ''}
+
+    </div>
+`;
+
 
         list.appendChild(li);
     });
@@ -111,8 +127,32 @@ function handleAddToCart(itemName) {
         toggleLoginModal(); // Show login modal
     }
 }
+function updatePrice(itemName) {
+    const newPrice = document.getElementById(`new-price-${itemName}`).value;
+    if (!newPrice.startsWith("$")) {
+        showToast("❌ Price must start with $");
+        return;
+    }
 
-document.addEventListener('DOMContentLoaded', updateCartCount);
+    // Update in-memory menu
+    for (const restaurant in restaurantMenus) {
+        const item = restaurantMenus[restaurant].find(i => i.name === itemName);
+        if (item) {
+            item.price = newPrice;
+        }
+    }
+
+    // Update DOM
+    document.getElementById(`price-${itemName}`).textContent = newPrice;
+
+    // Persist updated prices
+    localStorage.setItem("updatedPrices", JSON.stringify(restaurantMenus));
+
+    showToast(`✅ Price for ${itemName} updated to ${newPrice}`);
+}
+
+
+//document.addEventListener('DOMContentLoaded', updateCartCount);
 
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -135,51 +175,32 @@ function addToCart(itemName) {
     updateCartCount();
     showToast(`✅ ${itemName} added to cart`);
 
-}
-function updateAuthUI() {
-    isLoggedIn = localStorage.getItem("isLoggedIn") === "true";  // ✅ Check from localStorage
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+        const currentOrderKey = `currentOrder_${user}`;
+        let currentOrder = JSON.parse(localStorage.getItem(currentOrderKey)) || {
+            id: "ORD" + Date.now(),
+            date: new Date().toLocaleString(),
+            items: []
+        };
 
-    const signOutBtn = document.getElementById("signOutBtn");
-    const loginBtn = document.querySelector('button[onclick="toggleLoginModal()"]');
+        const existingItem = currentOrder.items.find(item => item.name === itemName);
+        if (existingItem) {
+            existingItem.qty += 1;
+        } else {
+            currentOrder.items.push({ name: itemName, qty: 1 });
+        }
 
-    if (isLoggedIn) {
-        signOutBtn?.classList.remove("hidden");
-        loginBtn?.classList.add("hidden");
-    } else {
-        signOutBtn?.classList.add("hidden");
-        loginBtn?.classList.remove("hidden");
+        localStorage.setItem(currentOrderKey, JSON.stringify(currentOrder));
     }
+
+
 }
-
-function signOut() {
-    isLoggedIn = false;
-    localStorage.removeItem("isLoggedIn"); // ✅ clear login state
-    localStorage.removeItem("cart"); // optional
-    updateCartCount();
-    updateAuthUI();
-    showToast("👋 You have been signed out.");
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    updateCartCount();
-    updateAuthUI();
-});
-
 
 function goToCart() {
     window.location.href = 'cart.html';
 }
 
-function showToast(message) {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.classList.remove('hidden');
-    toast.classList.add('opacity-100');
-
-    setTimeout(() => {
-        toast.classList.add('hidden');
-    }, 2000);
-}
 
 
 
@@ -205,6 +226,7 @@ function isValidEmail(email, message) {
 //phone number validation
 function isValidPhonenumber(number, message) {
     const phonenoRegex = /^\+?[0-9]{7,15}$/;
+
     if (!phonenoRegex.test(number)) {
         message.textContent = "❌ Invalid phone number!";
         message.className = "mt-4 text-red-600 font-semibold text-center";
@@ -230,16 +252,33 @@ function login() {
     let email = document.getElementById("loginEmail").value;
     let password = document.getElementById("loginPassword").value;
 
+    if (email == null || email == '') {
+        message.textContent = "❌ Please enter a valid email address!";
+        message.style.color = "red";
+        return false;
+    }
+    else if (password == null || password == '') {
+        message.textContent = "❌ Please enter password!";
+        message.style.color = "red";
+        return false;
+    }
+
     if (!isValidEmail(email, message)) {
         return false;
     }
 
-    if (email === "priya@gmail.com" && password === "123") {
+    if (email === "admin@gmail.com" && password === "admin") {
+        localStorage.setItem("isAdmin", "true");
+    }
+
+    if ((email === "abc@gmail.com" && password === "123") || (email === "cba@gmail.com" && password === "123") || (email === "admin@gmail.com" && password === "admin")) {
         message.textContent = "✅ Login Successfully!";
         message.className = "mt-4 text-green-600 font-semibold text-center";
         isLoggedIn = true;
         localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("loggedInUser", email);   // ✅ Set unique user ID
         localStorage.removeItem('cart');
+
         updateCartCount();
 
         // Close modal after a short delay
@@ -263,6 +302,27 @@ function register() {
     let number = document.getElementById("phoneNumber").value;
     let password = document.getElementById("registerPassword").value;
     let confPassword = document.getElementById("confirmPassword").value;
+
+    if (email == null || email == '') {
+        message.textContent = "❌ Please enter a valid email address!";
+        message.style.color = "red";
+        return false;
+    }
+    else if (number == null || number == '') {
+        message.textContent = "❌ Please enter your phone number!";
+        message.style.color = "red";
+        return false;
+    }
+    else if (password == null || password == '') {
+        message.textContent = "❌ Please enter password!";
+        message.style.color = "red";
+        return false;
+    }
+    else if (confPassword == null || confPassword == '') {
+        message.textContent = "❌ Please enter confirm password!";
+        message.style.color = "red";
+        return false;
+    }
 
     if (!isValidEmail(email, regmessage) || !isValidPhonenumber(number, regmessage) || !confirmPassword(password, confPassword, regmessage)) {
         return false;
@@ -297,4 +357,35 @@ function verifyOTP() {
     }
 
     return false; // prevent form reload
+}
+function goToRecentOrders() {
+    const user = localStorage.getItem("loggedInUser");
+    if (!user) {
+        showToast("⚠️ Please log in to view your recent orders.");
+        toggleLoginModal(); // open login modal
+        return;
+    }
+
+    const ordersKey = "recentOrders";
+    const currentOrderKey = `currentOrder_${user}`;
+
+    const allOrders = JSON.parse(localStorage.getItem(ordersKey) || "{}");
+    const currentOrder = JSON.parse(localStorage.getItem(currentOrderKey));
+
+
+    if (currentOrder && currentOrder.items.length > 0) {
+        if (!allOrders[user]) allOrders[user] = [];
+        allOrders[user].push(currentOrder);
+
+        localStorage.setItem(ordersKey, JSON.stringify(allOrders));
+        localStorage.removeItem(currentOrderKey);
+        localStorage.removeItem("cart");
+        updateCartCount();
+    }
+
+    window.location.href = "recentorder.html";
+}
+
+function goToAdminOrders() {
+    window.location.href = "orderList.html";
 }

@@ -2,14 +2,13 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cart - Bitevoo</title>
+    <meta charset="UTF-8">
+    <title>Recent Orders - Bitevoo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body>
+<body class="bg-gray-100 min-h-screen">
     <div class="bg-pink-800 h-32 flex items-center justify-between px-10">
         <h1 class="text-3xl font-extrabold font-mono text-white">Bitevoo</h1>
 
@@ -34,23 +33,17 @@
 
         </div>
     </div>
-    <h1 class="text-3xl font-bold mb-6 text-center text-pink-800">Your Cart</h1>
 
-    <div id="cartContainer" class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
-        <ul id="cartList" class="divide-y divide-gray-300 mb-6"></ul>
-
-        <div id="cartSummary" class="text-right font-semibold text-lg"></div>
-        <div class="flex justify-center">
-            <button id="checkoutBtn" class="mt-6 bg-pink-700 text-white px-6 py-2 rounded hover:bg-pink-900">
-                Checkout
-            </button>
+    <div class="max-w-4xl mx-auto mt-10 px-4">
+        <h2 class="text-3xl font-bold text-pink-800 mb-6">Your Recent Orders</h2>
+        <div id="ordersContainer" class="space-y-4">
+            <!-- Orders will be inserted here -->
         </div>
     </div>
     <div id="toast"
         class="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-500 z-50">
     </div>
-
-    <script src="./js/cart.js"></script>
+    <script src="./js/recentOrder.js"></script>
     <script src="./js/common.js"></script>
 </body>
 

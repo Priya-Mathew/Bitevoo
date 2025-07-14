@@ -7,7 +7,6 @@ const menuPrices = {
     "Lasagna Pizza": 18,
     // Add more as needed
 };
-let isLoggedIn = false;
 function loadCart() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartList = document.getElementById('cartList');
@@ -64,51 +63,27 @@ function changeQuantity(index, delta) {
     loadCart();
 }
 
-document.getElementById('checkoutBtn').addEventListener('click', () => {
-    alert('Proceeding to payment gateway... (functionality to be implemented)');
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (cart.length === 0) {
+            showToast("🛒 Your cart is empty. Redirecting to Home menu...");
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 2000);
+
+        }
+        else {
+            showToast("🚀 Proceeding to payment gateway...");
+            setTimeout(() => {
+                window.location.href = "payment.html";
+            }, 2000);
+        }
+    });
 });
+
 
 // On page load
 loadCart();
-function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const count = cart.length;
-    document.getElementById('cart-count').textContent = count;
-}
-function updateAuthUI() {
-    isLoggedIn = localStorage.getItem("isLoggedIn") === "true";  // ✅ Check from localStorage
 
-    const signOutBtn = document.getElementById("signOutBtn");
-    const loginBtn = document.querySelector('button[onclick="toggleLoginModal()"]');
 
-    if (isLoggedIn) {
-        signOutBtn?.classList.remove("hidden");
-        loginBtn?.classList.add("hidden");
-    } else {
-        signOutBtn?.classList.add("hidden");
-        loginBtn?.classList.remove("hidden");
-    }
-}
-function showToast(message) {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.classList.remove('hidden');
-    toast.classList.add('opacity-100');
-
-    setTimeout(() => {
-        toast.classList.add('hidden');
-    }, 2000);
-}
-document.addEventListener("DOMContentLoaded", () => {
-    updateCartCount();
-    updateAuthUI();  // ✅ shows sign out if logged in
-});
-
-function signOut() {
-    isLoggedIn = false;
-    localStorage.removeItem("isLoggedIn"); // ✅ clear login state
-    localStorage.removeItem("cart"); // optional
-    updateCartCount();
-    updateAuthUI();
-    showToast("👋 You have been signed out.");
-}

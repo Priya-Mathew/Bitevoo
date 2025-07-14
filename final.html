@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Success</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-gray-300 flex items-center justify-center h-screen">
+
+  <!-- Stylish Modal -->
+  <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+    <div
+      class="bg-white rounded-3xl p-8 shadow-2xl text-center w-96 border-4 border-pink-800 animate-fade-in-down relative">
+
+      <!-- Food Emoji -->
+      <div class="text-6xl mb-4">🍕</div>
+
+      <!-- Title -->
+      <h2 class="text-3xl text-blue-400 mb-2">Payment Successful!</h2>
+
+      <!-- Message -->
+      <p class="text-gray-800 text-lg mb-6">Thanks for ordering!<br>Your delicious food is on the way 🚀</p>
+
+      <!-- Go Home Button -->
+      <a href="index.html"
+        class="inline-block px-5 py-3 bg-pink-800 text-white font-bold rounded-full shadow-lg hover:hover:text-gray-300 transition-all duration-300">
+        🍽️ Back to Home
+      </a>
+
+      <!-- Decorative Spark -->
+      <div class="absolute top-0 right-0 text-yellow-400 text-xl animate-ping">✨</div>
+    </div>
+  </div>
+  <div id="toast"
+    class="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-500 z-50">
+  </div>
+  <script src="./js/final.js"></script>
+  <script src="./js/common.js"></script>
+
+</body>
+
+</html>
