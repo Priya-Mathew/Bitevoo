@@ -11,6 +11,12 @@ const menuPrices = {
     "Dessert": 10,
     "Milk Shake": 15,
     "Nuggets": 18,
+    "French Fries": 17,
+    "Burger": 20,
+    "Bucket Chicken": 11,
+    "Strips": 10,
+    "RiceBox": 15,
+    "Cola Drink": 18,
 };
 function loadCart() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];

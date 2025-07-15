@@ -62,6 +62,15 @@ const restaurantMenus = {
         { name: "Milk Shake", price: "$15", image: "./images/Menu/chick-fil-a-strawberry-milkshake.jpg" },
         { name: "Nuggets ", price: "$18", image: "./images/Menu/Nuggets_Chick.jpg" },
     ],
+    "KFC": [
+        { name: "French Fries", price: "$17", image: "./images/Menu/kfc_frenchfries.png" },
+        { name: "Burger", price: "$20", image: "./images/Menu/kfc-new-teriyaki-burger.png" },
+        { name: "Bucket Chicken", price: "$11", image: "./images/Menu/KFC_Bucket.webp" },
+        { name: "Strips", price: "$10", image: "./images/Menu/KFC_Strips.webp" },
+        { name: "RiceBox", price: "$15", image: "./images/Menu/KFC_RiceBox.jpg" },
+        { name: "Cola Drink ", price: "$18", image: "./images/Menu/KFC-cola-drink.jpg" },
+    ],
+    
 };
 
 
