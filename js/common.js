@@ -4,9 +4,14 @@ menuPrices = {
     "Pepperoni Pizza": 20,
     "Veggie Delight Pizza": 11,
     "BBQ Pizza": 10,
-    "Grandma's Pizza": 15,
+    "Grandma Pizza": 15,
     "Lasagna Pizza": 18,
-    // Add more as needed
+    "Burger": 17,
+    "Salad": 20,
+    "Wraps": 11,
+    "Dessert": 10,
+    "Milk Shake": 15,
+    "Nuggets": 18,
 };
 
 function updateCartCount() {

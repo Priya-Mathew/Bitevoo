@@ -43,21 +43,24 @@ function filterRestaurants() {
         list.classList.add("hidden");
     }
 }
-// const restaurantMenus = {
-//     "Mario's Pizza": ["Margherita", "Pepperoni", "Veggie Delight"],
-//     "KFC": ["Classic Burger", "Cheese Burger", "Veggie Burger"],
-//     "Yokohama": ["California Roll", "Spicy Tuna", "Salmon Nigiri"],
-//     "Chick-fil-A": ["Chicken Taco", "Beef Taco", "Veggie Taco"],
-//     "China Garden Restaurant": ["Butter Chicken", "Paneer Tikka", "Veg Biryani"]
-// };
+
 const restaurantMenus = {
     "Mario's Pizza": [
         { name: "Margherita Pizza", price: "$17", image: "./images/Menu/margherita-pizza.jpg" },
         { name: "Pepperoni Pizza", price: "$20", image: "./images/Menu/Pepperoni-Pizza.jpg" },
         { name: "Veggie Delight Pizza", price: "$11", image: "./images/Menu/VeggieDelight.webp" },
         { name: "BBQ Pizza", price: "$10", image: "./images/Menu/BBQ-Chicken-Pizza.jpg" },
-        { name: "Grandma's Pizza", price: "$15", image: "./images/Menu/Grandma Pizza.webp" },
-        { name: "Lasagna Pizza ", price: "$18", image: "./images/Menu/Pizza-Lasagna.jpg" },
+        { name: "Lasagna Pizza", price: "$18", image: "./images/Menu/Pizza-Lasagna.jpg" },
+        { name: "Grandma Pizza", price: "$15", image: "./images/Menu/Grandma Pizza.webp" },
+
+    ],
+    "Chick-fil-A": [
+        { name: "Burger", price: "$17", image: "./images/Menu/Chick-fil-a-Sandwiches.webp" },
+        { name: "Salad", price: "$20", image: "./images/Menu/Chick-fil-A-Salad.jpg" },
+        { name: "Wraps", price: "$11", image: "./images/Menu/Chick-Fil-A-Cool-Wrap.webp" },
+        { name: "Dessert", price: "$10", image: "./images/Menu/Chick-Fil-A-Brownies.jpg" },
+        { name: "Milk Shake", price: "$15", image: "./images/Menu/chick-fil-a-strawberry-milkshake.jpg" },
+        { name: "Nuggets ", price: "$18", image: "./images/Menu/Nuggets_Chick.jpg" },
     ],
 };
 
@@ -163,7 +166,7 @@ function addToCart(itemName) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     // Check if item already exists in cart
-    const existingItem = cart.find(item => item.name === itemName);
+    const existingItem = cart.find(item => item.name.trim() === itemName.trim());
 
     if (existingItem) {
         existingItem.qty += 1;
@@ -387,5 +390,13 @@ function goToRecentOrders() {
 }
 
 function goToAdminOrders() {
-    window.location.href = "orderList.html";
+    const user = localStorage.getItem("loggedInUser");
+    if (!user) {
+        showToast("⚠️ Please log in to view your recent orders.");
+        toggleLoginModal(); // open login modal
+        return;
+    }
+    else {
+        window.location.href = "orderList.html";
+    }
 }

@@ -3,9 +3,14 @@ const menuPrices = {
     "Pepperoni Pizza": 20,
     "Veggie Delight Pizza": 11,
     "BBQ Pizza": 10,
-    "Grandma's Pizza": 15,
+    "Grandma Pizza": 15,
     "Lasagna Pizza": 18,
-    // Add more as needed
+    "Burger": 17,
+    "Salad": 20,
+    "Wraps": 11,
+    "Dessert": 10,
+    "Milk Shake": 15,
+    "Nuggets": 18,
 };
 function loadCart() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -22,7 +27,20 @@ function loadCart() {
     let total = 0;
 
     cart.forEach((item, index) => {
-        const price = menuPrices[item.name] || 0;
+        //const price = menuPrices[item.name.trim()] || 0;
+        let updatedPrices = JSON.parse(localStorage.getItem("updatedPrices")) || {};
+        let dynamicPrice = 0;
+
+        for (const restaurant in updatedPrices) {
+            const itemInfo = updatedPrices[restaurant].find(i => i.name.trim() === item.name.trim());
+            if (itemInfo) {
+                dynamicPrice = parseFloat(itemInfo.price.replace("$", "")) || 0;
+                break;
+            }
+        }
+
+        const price = dynamicPrice || 0;
+
         total += price * item.qty;
 
         const li = document.createElement('li');

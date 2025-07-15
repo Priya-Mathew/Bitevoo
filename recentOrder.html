@@ -8,22 +8,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body class="bg-gray-100 min-h-screen">
+<!-- <body class="bg-gray-100 min-h-screen"> -->
+
+<body class="flex flex-col min-h-screen bg-gray-100">
     <div class="bg-pink-800 h-32 flex items-center justify-between px-10">
-        <h1 class="text-3xl font-extrabold font-mono text-white">Bitevoo</h1>
+        <h1 class="text-3xl font-extrabold font-mono text-white"><a href="index.html">Bitevoo</a></h1>
 
         <div class="flex items-center gap-4">
 
             <!-- Home Icon -->
-            <a href="index.html" title="Home" class="text-white hover:text-gray-300  text-2xl focus:outline-none">
-                <i class="fas fa-home"></i>
-            </a>
-            <div class="relative cursor-pointer ml-4">
-                <i class="fas fa-shopping-cart text-white text-2xl"></i>
-                <span id="cart-count"
-                    class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5">
-                    0
-                </span>
+            <div class="relative group inline-block">
+                <a href="index.html" title="Home" class="text-white hover:text-gray-300  text-2xl focus:outline-none">
+                    <i class="fas fa-home"></i>
+                </a>
+                <div
+                    class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2  whitespace-nowrap  px-2 py-1 text-xs text-white bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                    Home
+                </div>
+            </div>
+            <div class="relative group inline-block">
+                <div class="relative cursor-pointer ml-4">
+                    <i class="fas fa-shopping-cart text-white text-2xl"></i>
+                    <span id="cart-count"
+                        class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5">
+                        0
+                    </span>
+                </div>
+                <div
+                    class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2  whitespace-nowrap  px-2 py-1 text-xs text-white bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                    Cart
+                </div>
             </div>
             <!-- Sign Out Button (initially hidden) -->
             <button id="signOutBtn" class="hidden bg-black text-white rounded-2xl hover:bg-gray-700 px-6 py-2"
@@ -45,6 +59,12 @@
     </div>
     <script src="./js/recentOrder.js"></script>
     <script src="./js/common.js"></script>
+    <footer class="bg-black text-white px-6 py-4 mt-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center text-sm">
+            <p>&copy; 2025 Bitevoo. All rights reserved.</p>
+            <p>Designed by Team Bitevoo</p>
+        </div>
+    </footer>
 </body>
 
 </html>
