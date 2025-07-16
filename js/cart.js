@@ -78,7 +78,7 @@ function changeQuantity(index, delta) {
 
     cart[index].qty += delta;
 
-    // Remove item if qty <= 0
+
     if (cart[index].qty <= 0) {
         cart.splice(index, 1);
     }
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// On page load
+
 loadCart();
 
 

@@ -25,10 +25,7 @@ function saveCardDetails() {
         }
     }
 
-
-
-    // Get current user ID from localStorage
-    const userId = localStorage.getItem("loggedInUser"); // set this on login
+    const userId = localStorage.getItem("loggedInUser");
 
     if (!userId) {
         showToast('User not logged in.');
@@ -73,9 +70,8 @@ function Payment() {
         return false;
     }
 
-    // Set flag in localStorage
     localStorage.setItem("paymentStatus", "success");
-    // Redirect to success page
+
     setTimeout(() => {
         window.location.href = "final.html";
     }, 2000);

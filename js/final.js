@@ -9,7 +9,7 @@ window.onload = function () {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     if (cart.length === 0) return;
 
-    // ⬇️ Read existing orders as an object keyed by user
+
     const allOrders = JSON.parse(localStorage.getItem("recentOrders")) || {};
     if (!Array.isArray(allOrders[user])) {
       allOrders[user] = [];
@@ -30,7 +30,7 @@ window.onload = function () {
     allOrders[user].push(newOrder);
     localStorage.setItem("recentOrders", JSON.stringify(allOrders));
 
-    // Clear cart and current order
+
     localStorage.removeItem("cart");
     localStorage.removeItem(`currentOrder_${user}`);
   }

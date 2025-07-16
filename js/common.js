@@ -32,7 +32,7 @@ function updateAuthUI() {
     const signOutBtn = document.getElementById("signOutBtn");
     const loginBtn = document.querySelector('button[onclick="toggleLoginModal()"]');
 
-    // Always get these elements
+
     const cartIcon = document.querySelector('.fa-shopping-cart')?.parentElement;
     const recentOrdersIcon = document.querySelector('.fa-clock')?.parentElement;
     const adminOrdersIcon = document.querySelector('.fa-tasks')?.parentElement;
@@ -42,18 +42,17 @@ function updateAuthUI() {
         loginBtn?.classList.add("hidden");
 
         if (isAdmin) {
-            // Admin: show admin, hide cart and recent
+
             cartIcon?.classList.add("hidden");
             recentOrdersIcon?.classList.add("hidden");
             adminOrdersIcon?.classList.remove("hidden");
         } else {
-            // Normal user: show cart and recent, hide admin
+
             cartIcon?.classList.remove("hidden");
             recentOrdersIcon?.classList.remove("hidden");
             adminOrdersIcon?.classList.add("hidden");
         }
     } else {
-        // Not logged in: show everything
         signOutBtn?.classList.add("hidden");
         loginBtn?.classList.remove("hidden");
 
@@ -76,7 +75,7 @@ function showToast(message) {
 }
 document.addEventListener("DOMContentLoaded", () => {
     updateCartCount();
-    updateAuthUI();  // ✅ shows sign out if logged in
+    updateAuthUI();
 
     const userId = localStorage.getItem("loggedInUser");
     if (!userId) return;
@@ -94,10 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function signOut() {
     isLoggedIn = false;
-    localStorage.removeItem("isLoggedIn"); // ✅ clear login state
+    localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("loggedInUser");
 
-    localStorage.removeItem("cart"); // optional
+    localStorage.removeItem("cart");
     const isAdmin = localStorage.getItem("isAdmin") === "true";
     if (!isAdmin) {
         updateCartCount();
@@ -107,6 +106,6 @@ function signOut() {
     showToast("👋 You have been signed out.");
     setTimeout(() => {
         window.location.href = "index.html";
-    }, 1500); // wait 1.5 seconds so the toast is visible
+    }, 1500);
 }
 

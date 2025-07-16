@@ -70,7 +70,7 @@ const restaurantMenus = {
         { name: "RiceBox", price: "$15", image: "./images/Menu/KFC_RiceBox.jpg" },
         { name: "Cola Drink ", price: "$18", image: "./images/Menu/KFC-cola-drink.jpg" },
     ],
-    
+
 };
 
 
@@ -79,7 +79,6 @@ function goToCart() {
     window.location.href = 'cart.html';
 }
 
-// Call it on page load
 document.addEventListener("DOMContentLoaded", () => {
     const savedMenus = JSON.parse(localStorage.getItem("updatedPrices"));
     if (savedMenus) {
@@ -97,7 +96,7 @@ function showMenu(restaurantName) {
     const foods = restaurantMenus[restaurantName] || [];
     const isAdmin = localStorage.getItem("isAdmin") === "true";
 
-    list.innerHTML = ""; // Clear previous
+    list.innerHTML = "";
 
     foods.forEach(item => {
         const li = document.createElement("li");
@@ -136,7 +135,7 @@ function handleAddToCart(itemName) {
     if (isLoggedIn) {
         addToCart(itemName);
     } else {
-        toggleLoginModal(); // Show login modal
+        toggleLoginModal();
     }
 }
 function updatePrice(itemName) {
@@ -146,7 +145,7 @@ function updatePrice(itemName) {
         return;
     }
 
-    // Update in-memory menu
+
     for (const restaurant in restaurantMenus) {
         const item = restaurantMenus[restaurant].find(i => i.name === itemName);
         if (item) {
@@ -154,17 +153,14 @@ function updatePrice(itemName) {
         }
     }
 
-    // Update DOM
+
     document.getElementById(`price-${itemName}`).textContent = newPrice;
 
-    // Persist updated prices
+
     localStorage.setItem("updatedPrices", JSON.stringify(restaurantMenus));
 
     showToast(`✅ Price for ${itemName} updated to ${newPrice}`);
 }
-
-
-//document.addEventListener('DOMContentLoaded', updateCartCount);
 
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -174,7 +170,6 @@ function updateCartCount() {
 function addToCart(itemName) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    // Check if item already exists in cart
     const existingItem = cart.find(item => item.name.trim() === itemName.trim());
 
     if (existingItem) {
@@ -196,7 +191,7 @@ function addToCart(itemName) {
             items: []
         };
 
-        const existingItem = currentOrder.items.find(item => item.name === itemName);
+        const existingItem = currentOrder.items.find(item => item.name.trim() === itemName.trim());
         if (existingItem) {
             existingItem.qty += 1;
         } else {
